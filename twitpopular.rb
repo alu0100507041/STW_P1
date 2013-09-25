@@ -1,15 +1,16 @@
 require 'twitter'
 require './configure'
 
-screen_name = ARGV[0] || 'Riesse_'
+screen_name = ARGV[0] || 'timorielly'
 a_user = Twitter.user(screen_name)
 
-usuarios = ARGV[1].to_i || 20
+usuarios = (ARGV[1] || 5).to_i
 
-puts "Usuario principal"
-puts "Username   : #{a_user.screen_name}"
-
-puts "Usuarios Amigos"
+puts "USUARIO PRINCIPAL"
+puts "Username: #{a_user.screen_name}"
+puts
+puts "------------------------"
+puts "USUARIOS AMIGOS"
 
 seguido = Twitter.following(screen_name)
 
@@ -17,15 +18,14 @@ prueba = Hash.new
 
 for a in seguido
   if usuarios > 0
-    puts "Seguido : #{a.name}, Seguidores: #{a.followers_count}"
+    puts "amigo: #{a.name}, Seguidores: #{a.followers_count}"
     prueba[a.name] = a.followers_count
     usuarios = usuarios-1
   end
 end
 
-puts "Hash"
-puts prueba
-
-puts "Usuarios Amigos Ordenados por el mas popular" 
-puts "#{prueba.sort_by{|x| -x[1]}}"
-
+puts "--------------------------------------------" 
+puts "USUARIOS AMIGOS ORDENADOS POR EL MAS POPULAR"
+prueba.sort_by{|x| -x[1]}.each do |usuario,seguidores|
+  puts "Amigo: #{usuario}, Seguidores: #{seguidores}"
+end
